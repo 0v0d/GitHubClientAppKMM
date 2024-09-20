@@ -262,5 +262,10 @@ gradle-app.setting
 
 ### Gradle Patch ###
 **/build/
+.idea/*
+!.idea/codeStyles
+!.idea/runConfigurations
+
+iosApp/iosApp.xcodeproj/project.xcworkspace/contents.xcworkspacedata
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode,gradle,kotlin,intellij,cocoapods
