@@ -28,6 +28,7 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.androidx.compose.material.iconsExtended)
             implementation(libs.koin.core)
+            implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
             implementation(libs.androidx.navigation.ui.ktx)
             implementation(libs.androidx.navigation.runtime.ktx)
