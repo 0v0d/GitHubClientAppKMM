@@ -6,6 +6,7 @@
 //  Copyright © 2024 orgName. All rights reserved.
 //
 import SwiftUI
+import Shared
 
 struct InputScreenView: View {
     @State private var text: String = ""
@@ -44,10 +45,9 @@ struct InputScreenView: View {
                 .padding(.bottom, 8)
                 
                 Spacer()
-            }
-            .navigationTitle("検索")
+            }            .navigationTitle("検索")
             .navigationDestination(isPresented: $shouldNavigate) {
-                RepositoryListView(inputText: text,viewModel: RepositoryListView.ViewModel())
+                RepositoryListView(inputText: text,searchHelper: SearchRepositoriesUseCaseHelper())
             }
         }
     }

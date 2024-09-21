@@ -1,78 +1,123 @@
-//
-//  RepositoryListView.swift
-//  iosApp
-//
-//  Created by 0v0 on 2024/09/21.
-//  Copyright © 2024 orgName. All rights reserved.
-//
 import SwiftUI
 import Shared
+import Foundation
+
 
 struct RepositoryListView: View {
-    let inputText: String
-    @ObservedObject private(set) var viewModel: ViewModel
+    @StateObject private var viewModel: ViewModel
+    
+    init(inputText: String, searchHelper: SearchRepositoriesUseCaseHelper) {
+        _viewModel = StateObject(wrappedValue: ViewModel(searchHelper: searchHelper, inputText: inputText))
+    }
     
     var body: some View {
-        VStack {
-            ListView(repositories: viewModel.repositories)
-                .task { await self.viewModel.startObserving(inputText: inputText) }
-        }.navigationTitle("RepositoryList")
+        NavigationStack {
+            content
+                .navigationTitle("Repositories")
+        }
+        .task {
+            await viewModel.send(.onAppear)
+        }
+    }
+    
+    @ViewBuilder
+    private var content: some View {
+        switch viewModel.state {
+        case .loading:
+            ProgressView("Loading...")
+        case .loaded(let repos):
+            repositoryList(repos)
+        case .failed(let error):
+            ErrorView(error: error, retryAction: { Task { await viewModel.send(.onRetryButtonTapped) } })
+        }
+    }
+    
+    private func repositoryList(_ repos: [RepositoryItem]) -> some View {
+        List(repos, id: \.id) { repo in
+            NavigationLink(value: repo) {
+                RepositoryRowView(repository: repo)
+            }
+        }
+        .navigationDestination(for: RepositoryItem.self) { repo in
+            RepositoryDetailView(repository: repo)
+        }
     }
 }
 
 extension RepositoryListView {
     @MainActor
-    class ViewModel: ObservableObject {
-        @Published var repositories: [RepositoryItem] = []
-        private let searchHelper: SearchRepositoriesUseCaseHelper
-        
-        init(searchHelper: SearchRepositoriesUseCaseHelper = SearchRepositoriesUseCaseHelper()) {
-            self.searchHelper = searchHelper
+    final class ViewModel: ObservableObject {
+        enum Action {
+            case onAppear
+            case onRetryButtonTapped
         }
         
-        func startObserving(inputText: String) async {
-            for await repoList in searchHelper.searchRepositories(query: inputText) {
-                self.repositories = repoList
+        @Published private(set) var state: ViewState<[RepositoryItem]> = .loading
+        
+        private let searchHelper: SearchRepositoriesUseCaseHelper
+        private let inputText: String
+        private var searchTask: Task<Void, Never>?
+        
+        init(searchHelper: SearchRepositoriesUseCaseHelper, inputText: String) {
+            self.searchHelper = searchHelper
+            self.inputText = inputText
+        }
+        
+        func send(_ action: Action) async {
+            switch action {
+            case .onAppear, .onRetryButtonTapped:
+                state = .loading
+                await searchRepositories()
             }
         }
+        
+        private func searchRepositories() async {
+            state = .loading
+            for await repos in searchHelper.searchRepositories(query: inputText) {
+                if repos.isEmpty {
+                    state = .failed(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No repositories found"]))
+                } else {
+                    state = .loaded(repos)
+                }
+            }
+        }
+        
     }
 }
 
-private struct ListView: View {
-    let repositories: [RepositoryItem]
+struct RepositoryRowView: View {
+    let repository: RepositoryItem
     
     var body: some View {
-        List(repositories, id: \.id) { repo in
-            VStack(alignment: .leading) {
-                Text(repo.name)
-                    .font(.headline)
-                Text(repo.owner.login)
-                    .font(.subheadline)
+        VStack(alignment: .leading, spacing: 4) {
+            Text(repository.name)
+                .font(.headline)
+            Text(repository.owner.login)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            if let language = repository.language {
+                Text(language)
+                    .font(.caption)
                     .foregroundColor(.secondary)
-                
-                if let language = repo.language {
-                    Text(language)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                } else {
-                    Text("No language information")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                
-                if let description = repo.description_ {
-                    Text(description)
-                        .font(.subheadline)
-                        .foregroundColor(.primary)
-                        .lineLimit(2)
-                } else {
-                    Text("No description")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
+            }
+            
+            if let description = repository.description_ {
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(.primary)
+                    .lineLimit(2)
             }
         }
+        .padding(.vertical, 4)
     }
 }
 
-    
+struct RepositoryListView_Previews: PreviewProvider {
+    static var previews: some View {
+        RepositoryListView(
+            inputText: "swift",
+            searchHelper: MockSearchRepositoriesUseCaseHelper()
+        )
+    }
+}

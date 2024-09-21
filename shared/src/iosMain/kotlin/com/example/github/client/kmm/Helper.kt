@@ -6,11 +6,12 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.context.startKoin
 
-class SearchRepositoriesUseCaseHelper : KoinComponent {
+open class SearchRepositoriesUseCaseHelper : KoinComponent {
     private val searchRepositoriesUseCase: SearchRepositoriesUseCase by inject()
-    fun searchRepositories(query: String) = searchRepositoriesUseCase(query)
+    open fun searchRepositories(query: String) = searchRepositoriesUseCase(query)
 }
 
+@Suppress("UnusedPrivateMember")
 fun initKoin() {
     startKoin {
         modules(sharedModule)
