@@ -12,15 +12,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.CallSplit
-import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,59 +47,109 @@ fun DetailScreen(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
+        HeaderView(repositoryItem)
+        Spacer(modifier = Modifier.height(16.dp))
+        OwnerView(repositoryItem.owner)
+        Spacer(modifier = Modifier.height(16.dp))
+        DescriptionView(repositoryItem.description)
+        Spacer(modifier = Modifier.height(16.dp))
+        StatisticsView(repositoryItem)
+    }
+}
+
+@Composable
+private fun HeaderView(repositoryItem: RepositoryItem) {
+    Column {
         Text(
             text = repositoryItem.name,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            AsyncImage(
-                model = repositoryItem.owner.avatarUrl,
-                contentDescription = "Owner Avatar",
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape)
+        repositoryItem.language?.let { language ->
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = language,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Utility().getColorForLanguage(language)
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = repositoryItem.owner.login)
         }
+    }
+}
 
-        Spacer(modifier = Modifier.height(16.dp))
+@Composable
+private fun OwnerView(owner: OwnerItem) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        AsyncImage(
+            model = owner.avatarUrl,
+            contentDescription = "Owner Avatar",
+            modifier = Modifier
+                .size(60.dp)
+                .clip(CircleShape)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Column {
+            Text(
+                text = owner.login,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = "Owner",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            )
+        }
+    }
+}
 
-        repositoryItem.description?.let {
+@Composable
+private fun DescriptionView(description: String?) {
+    description?.let {
+        Surface(
+            shape = RoundedCornerShape(8.dp),
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(
                 text = it,
                 style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(12.dp)
             )
-            Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+}
 
-        repositoryItem.language?.let {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Code,
-                    contentDescription = "Language"
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = it,
-                    color = Utility().getColorForLanguage(it)
-                )
+@Composable
+private fun StatisticsView(repositoryItem: RepositoryItem) {
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                StatisticItem(Icons.Default.Star, repositoryItem.stargazersCount, "Stars")
+                StatisticItem(Icons.Default.RemoveRedEye, repositoryItem.watchersCount, "Watchers")
             }
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            StatisticItem(Icons.Default.Star, repositoryItem.stargazersCount, "Stars")
-            StatisticItem(Icons.Default.RemoveRedEye, repositoryItem.watchersCount, "Watchers")
-            StatisticItem(Icons.AutoMirrored.Filled.CallSplit, repositoryItem.forksCount, "Forks")
-            StatisticItem(Icons.Default.ErrorOutline, repositoryItem.openIssuesCount, "Issues")
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                StatisticItem(
+                    Icons.AutoMirrored.Filled.CallSplit,
+                    repositoryItem.forksCount,
+                    "Forks"
+                )
+                StatisticItem(Icons.Default.ErrorOutline, repositoryItem.openIssuesCount, "Issues")
+            }
         }
     }
 }
@@ -114,9 +165,22 @@ private fun StatisticItem(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(imageVector = icon, contentDescription = label)
-        Text(text = count)
-        Text(text = label, style = MaterialTheme.typography.bodySmall)
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(24.dp)
+        )
+        Text(
+            text = count.toString(),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+        )
     }
 }
 

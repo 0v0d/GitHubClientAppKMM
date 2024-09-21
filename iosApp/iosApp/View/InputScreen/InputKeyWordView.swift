@@ -8,7 +8,7 @@
 import SwiftUI
 import Shared
 
-struct InputScreenView: View {
+struct InputKeyWordView: View {
     @State private var text: String = ""
     @State private var shouldNavigate: Bool = false
     
