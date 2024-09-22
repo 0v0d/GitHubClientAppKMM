@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.github.client.kmm.mock.RepositoryItemMocks
 import com.example.github.client.kmm.model.OwnerItem
 import com.example.github.client.kmm.model.RepositoryItem
 import com.example.github.client.kmm.util.Utility
@@ -172,7 +173,7 @@ private fun StatisticItem(
             modifier = Modifier.size(24.dp)
         )
         Text(
-            text = count.toString(),
+            text = count,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold
         )
@@ -189,22 +190,6 @@ private fun StatisticItem(
 @Composable
 private fun PreviewDetailScreen() {
     DetailScreen(
-        repositoryItem = RepositoryItem(
-            id = 123456789,
-            name = "Hello-World",
-            fullName = "octocat/Hello-World",
-            owner = OwnerItem(
-                login = "octocat",
-                avatarUrl = "https://avatars.githubusercontent.com/u/583231?v=4",
-                htmlUrl = "https://github.com/octocat"
-            ),
-            htmlUrl = "https://github.com/octocat/Hello-World",
-            description = "This is your first repository",
-            language = "Kotlin",
-            stargazersCount = "1500",
-            watchersCount = "1500",
-            forksCount = "300",
-            openIssuesCount = "42"
-        ),
+        repositoryItem = RepositoryItemMocks.mockRepo1
     )
 }

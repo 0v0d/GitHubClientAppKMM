@@ -10,55 +10,34 @@ import Shared
 
 struct RepositoryDetailView: View {
     let repository: RepositoryItem
-    private let languageColors: [String: Color] = [
-        "kotlin": .purple,
-        "java": .orange,
-        "python": .blue,
-        "javascript": .yellow,
-        "typescript": .cyan,
-        "c#": .green,
-        "c++": .blue,
-        "go": .cyan,
-        "rust": .orange,
-        "swift": .orange
-    ]
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 16) {
                 Text(repository.name)
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .font(.system(size: 28, weight: .bold))
                     .foregroundColor(.primary)
                     .padding(.bottom, 8)
-                ownerView
-                descriptionView
-                languageView
-                statisticsView
                 
-               Spacer(minLength: 20)
+                ownerView
+                
+                descriptionView
+                
+                languageView
+                
+                statisticsView
             }
             .padding(.horizontal)
+            .padding(.vertical, 16)
         }
         .navigationBarTitleDisplayMode(.inline)
     }
     
-    private var languageView: some View {
-        VStack(alignment: .leading) {
-            if let language = repository.language {
-                HStack(spacing: 6) {
-                    Image(systemName: "chevron.left.slash.chevron.right")
-                    Text(language)
-                        .font(.subheadline)
-                        .foregroundColor(languageColor(for: language))
-                }
-            }
-        }.padding()
-    }
-    
     
     private var ownerView: some View {
-        HStack(spacing: 16) {
-            AsyncImage(url: URL(string: repository.owner.avatarUrl)) { image in image
+        HStack(spacing: 8) {
+            AsyncImage(url: URL(string: repository.owner.avatarUrl)) { image in
+                image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 60, height: 60)
@@ -72,6 +51,7 @@ struct RepositoryDetailView: View {
                 .font(.headline)
                 .foregroundColor(.primary)
         }
+        .padding(.bottom, 16)
     }
     
     @ViewBuilder
@@ -83,21 +63,32 @@ struct RepositoryDetailView: View {
                 .padding(.horizontal, 12)
                 .background(Color.secondary.opacity(0.1))
                 .cornerRadius(8)
+                .padding(.bottom, 16)
         }
     }
     
+    private var languageView: some View {
+        VStack(alignment: .leading,spacing: 8) {
+            if let language = repository.language {
+                HStack(spacing: 8) {
+                    Image(systemName: "chevron.left.slash.chevron.right")
+                    Text(language)
+                        .font(.subheadline)
+                        .foregroundColor(Utility().getLanguageColor(for: language))
+                }
+            }
+        }
+    }
+    
+    
     private var statisticsView: some View {
-        HStack {
+        HStack(spacing: 30) {
             StatisticItem(icon: "star.fill", count: repository.stargazersCount, label: "Stars")
             StatisticItem(icon: "eye.fill", count: repository.watchersCount, label: "Watchers")
             StatisticItem(icon: "tuningfork", count: repository.forksCount, label: "Forks")
             StatisticItem(icon: "exclamationmark.triangle.fill", count: repository.openIssuesCount, label: "Issues")
         }
         .padding(.vertical, 8)
-    }
-    
-    private func languageColor(for language: String) -> Color {
-        languageColors[language.lowercased()] ?? .blue
     }
 }
 
@@ -107,34 +98,26 @@ struct StatisticItem: View {
     let label: String
     
     var body: some View {
-        VStack {
+        VStack(alignment: .center, spacing: 4) {
             Image(systemName: icon)
+                .font(.title3)
+                .foregroundColor(.secondary)
+            
             Text(count)
                 .font(.subheadline)
+                .foregroundColor(.primary)
+            
             Text(label)
                 .font(.caption)
-        }.padding()
+                .foregroundColor(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 8)
     }
 }
 
 #Preview {
     RepositoryDetailView(
-        repository: RepositoryItem(
-            id: 123456789,
-            name:"Hello-World",
-            fullName: "octocat/Hello-World",
-            owner: OwnerItem(
-                login: "octocat",
-                avatarUrl: "https://avatars.githubusercontent.com/u/583231?v=4",
-                htmlUrl: "https://github.com/octocat"
-            ),
-            htmlUrl:  "https://github.com/octocat/Hello-World",
-            description:"This is your first repository",
-            language:  "Kotlin",
-            stargazersCount: "1500",
-            watchersCount:  "1500",
-            forksCount: "300",
-            openIssuesCount:  "42"
-        )
+        repository: RepositoryItemMocks().mockRepo1
     )
 }

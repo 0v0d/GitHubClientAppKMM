@@ -18,7 +18,7 @@ struct RepositoryListView: View {
                 }
         }
         .task {
-            await viewModel.send(.onAppear)
+            await viewModel.performSearch(.onAppear)
         }
     }
     
@@ -27,10 +27,14 @@ struct RepositoryListView: View {
         switch viewModel.state {
         case .loading:
             ProgressView("Loading...")
-        case .loaded(let repos):
+        case .success(let repos):
             repositoryList(repos)
-        case .failed:
-            failureView
+        case .failed(let error):
+            ErrorView(error: error) {
+                Task {
+                    await viewModel.performSearch(.onRetry)
+                }
+            }
         }
     }
     
@@ -41,25 +45,12 @@ struct RepositoryListView: View {
             }
         }
     }
-    
-    private var failureView: some View {
-        VStack {
-            Text("Failed to load repositories")
-            Button("Retry") {
-                Task {
-                    await viewModel.send(.onRetryButtonTapped)
-                }
-            }
-            .padding()
-        }
-    }
 }
-
 
 struct RepositoryListView_Previews: PreviewProvider {
     static var previews: some View {
         RepositoryListView(
-            inputText: "swift",
+            inputText: "test",
             searchHelper: MockSearchRepositoriesUseCaseHelper()
         )
     }

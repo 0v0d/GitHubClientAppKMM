@@ -6,8 +6,8 @@
 //  Copyright © 2024 orgName. All rights reserved.
 //
 
-enum ViewState<Value> {
+enum SearchState<Value> {
     case loading
     case failed(Error)
-    case loaded(Value)
+    case success(Value)
 }

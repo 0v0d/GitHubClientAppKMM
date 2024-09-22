@@ -15,37 +15,34 @@ extension RepositoryListView {
     final class ViewModel: ObservableObject {
         enum Action {
             case onAppear
-            case onRetryButtonTapped
+            case onRetry
         }
         
-        @Published private(set) var state: ViewState<[RepositoryItem]> = .loading
+        @Published private(set) var state: SearchState<[RepositoryItem]> = .loading
         
         private let searchHelper: SearchRepositoriesUseCaseHelper
         private let inputText: String
-        private var searchTask: Task<Void, Never>?
         
         init(searchHelper: SearchRepositoriesUseCaseHelper, inputText: String) {
             self.searchHelper = searchHelper
             self.inputText = inputText
         }
         
-        func send(_ action: Action) async {
+        func performSearch(_ action: Action) async {
             switch action {
-            case .onAppear, .onRetryButtonTapped:
-                state = .loading
+            case .onAppear, .onRetry:
                 await searchRepositories()
             }
         }
         
+        @MainActor
         private func searchRepositories() async {
             state = .loading
             for await repos in searchHelper.searchRepositories(query: inputText) {
                 if repos.isEmpty {
-                    print("No repositories found")
                     state = .failed(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No repositories found"]))
                 } else {
-                    print("Repositories loaded: \(repos.count)")
-                    state = .loaded(repos)
+                    state = .success(repos)
                 }
             }
         }

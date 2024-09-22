@@ -13,13 +13,8 @@ struct ErrorView: View {
     
     var body: some View {
         VStack {
-            Text("Failed to load repositories")
-                .font(.headline)
             Text(error.localizedDescription)
-                .font(.caption)
-                .foregroundColor(.red)
-                .multilineTextAlignment(.center)
-                .padding()
+                .font(.headline)
             Button("Retry", action: retryAction)
                 .padding()
         }
