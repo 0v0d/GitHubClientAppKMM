@@ -9,53 +9,49 @@ import SwiftUI
 import Shared
 
 struct InputKeyWordView: View {
-    @State private var text: String = ""
-    @State private var shouldNavigate: Bool = false
+    @StateObject private var viewModel = InputKeyWordViewModel()
     
     var body: some View {
         NavigationStack {
             VStack {
-                SearchTextField(text: $text, onSubmit: {
-                    shouldNavigate = true
-                })
-                .padding(.horizontal)
-                .padding(.top, 8)
-                .padding(.bottom, 8)
+                SearchTextField(text: $viewModel.text, onSubmit: viewModel.onSubmit)
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+                    .padding(.bottom, 8)
                 
                 Spacer()
             }
             .navigationTitle("検索")
-            .navigationDestination(isPresented: $shouldNavigate) {
-                RepositoryListView(inputText: text, searchHelper: SearchRepositoriesUseCaseHelper())
+            .navigationDestination(isPresented: $viewModel.shouldNavigate) {
+                RepositoryListView(inputText: viewModel.text, searchHelper: SearchRepositoriesUseCaseHelper())
             }
         }
     }
 }
 
-
-struct InputKeyWordView_Preview: View {
-    @State private var text = ""
-    @State private var shouldNavigate: Bool = false
+struct InputKeyWordView_MockPreview: View {
+    @StateObject private var viewModel = InputKeyWordViewModel()
+    
     var body: some View {
         NavigationStack {
             VStack {
-                SearchTextField(text: $text, onSubmit: {
-                    shouldNavigate = true
-                })
-                .padding(.horizontal)
-                .padding(.top, 8)
-                .padding(.bottom, 8)
+                SearchTextField(text: $viewModel.text, onSubmit: viewModel.onSubmit)
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+                    .padding(.bottom, 8)
                 
                 Spacer()
             }
             .navigationTitle("検索")
-            .navigationDestination(isPresented:  $shouldNavigate) {
+            .navigationDestination(isPresented: $viewModel.shouldNavigate) {
                 RepositoryListView(inputText: "Mock", searchHelper: MockSearchRepositoriesUseCaseHelper())
             }
         }
     }
 }
 
-#Preview {
-    InputKeyWordView_Preview()
+struct InputKeyWordView_Preview: PreviewProvider {
+    static var previews: some View {
+        InputKeyWordView_MockPreview()
+    }
 }

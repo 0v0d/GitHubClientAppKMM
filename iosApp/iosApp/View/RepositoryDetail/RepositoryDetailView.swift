@@ -14,81 +14,105 @@ struct RepositoryDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Text(repository.name)
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(.primary)
-                    .padding(.bottom, 8)
-                
-                ownerView
-                
-                descriptionView
-                
-                languageView
-                
-                statisticsView
+                RepositoryTitleView(name: repository.name)
+                OwnerView(owner: repository.owner)
+                DescriptionView(description: repository.description_)
+                LanguageView(language: repository.language)
+                StatisticsView(repository: repository)
             }
             .padding(.horizontal)
             .padding(.vertical, 16)
         }
         .navigationBarTitleDisplayMode(.inline)
     }
+}
+
+
+private struct RepositoryTitleView: View {
+    let name: String
     
+    var body: some View {
+        Text(name)
+            .font(.system(size: 28, weight: .bold))
+            .foregroundColor(.primary)
+            .padding(.bottom, 8)
+    }
+}
+
+private struct OwnerView: View {
+    let owner: OwnerItem
     
-    private var ownerView: some View {
+    var body: some View {
         HStack(spacing: 8) {
-            AsyncImage(url: URL(string: repository.owner.avatarUrl)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.secondary.opacity(0.3), lineWidth: 1))
-            } placeholder: {
-                ProgressView()
-            }
-            
-            Text(repository.owner.login)
+            AvatarImageView(url: owner.avatarUrl)
+            Text(owner.login)
                 .font(.headline)
                 .foregroundColor(.primary)
         }
-        .padding(.bottom, 16)
+        .padding(.bottom, 8)
     }
+}
+
+private struct AvatarImageView: View {
+    let url: String
     
-    @ViewBuilder
-    private var descriptionView: some View {
-        if let description = repository.description_ {
-            Text(description)
-                .font(.body)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 12)
-                .background(Color.secondary.opacity(0.1))
-                .cornerRadius(8)
-                .padding(.bottom, 16)
+    var body: some View {
+        AsyncImage(url: URL(string: url)) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 60, height: 60)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.secondary.opacity(0.3), lineWidth: 1))
+        } placeholder: {
+            ProgressView()
+                .frame(width: 60, height: 60)
         }
     }
+}
+
+private struct DescriptionView: View {
+    let description: String?
     
-    private var languageView: some View {
-        VStack(alignment: .leading,spacing: 8) {
-            if let language = repository.language {
+    var body: some View {
+        Group {
+            if let description = description {
+                Text(description)
+                    .font(.body)
+                    .padding(.vertical, 4)
+            }
+        }
+    }
+}
+
+private struct LanguageView: View {
+    let language: String?
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let language = language {
                 HStack(spacing: 8) {
-                    Image(systemName: "chevron.left.slash.chevron.right")
+                    Image(systemName: "chevron.left.chevron.right")
                     Text(language)
                         .font(.subheadline)
                         .foregroundColor(Utility().getLanguageColor(for: language))
                 }
             }
         }
+        .padding(.bottom, 8)
     }
+}
+
+private struct StatisticsView: View {
+    let repository: RepositoryItem
     
-    
-    private var statisticsView: some View {
-        HStack(spacing: 30) {
+    var body: some View {
+        HStack {
             StatisticItem(icon: "star.fill", count: repository.stargazersCount, label: "Stars")
             StatisticItem(icon: "eye.fill", count: repository.watchersCount, label: "Watchers")
             StatisticItem(icon: "tuningfork", count: repository.forksCount, label: "Forks")
             StatisticItem(icon: "exclamationmark.triangle.fill", count: repository.openIssuesCount, label: "Issues")
         }
-        .padding(.vertical, 8)
     }
 }
 
@@ -98,7 +122,7 @@ struct StatisticItem: View {
     let label: String
     
     var body: some View {
-        VStack(alignment: .center, spacing: 4) {
+        VStack {
             Image(systemName: icon)
                 .font(.title3)
                 .foregroundColor(.secondary)
@@ -116,8 +140,10 @@ struct StatisticItem: View {
     }
 }
 
-#Preview {
-    RepositoryDetailView(
-        repository: RepositoryItemMocks().mockRepo1
-    )
+struct RepositoryDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            RepositoryDetailView(repository: RepositoryItemMocks().mockRepo1)
+        }
+    }
 }

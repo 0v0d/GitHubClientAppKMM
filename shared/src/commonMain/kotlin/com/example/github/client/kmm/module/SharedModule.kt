@@ -1,14 +1,17 @@
 package com.example.github.client.kmm.module
 
+import com.example.github.client.kmm.model.GitHubAPIResponse
 import com.example.github.client.kmm.remote.GitHubAPI
 import com.example.github.client.kmm.repository.GitHubRepository
 import com.example.github.client.kmm.repository.GitHubRepositoryImpl
 import com.example.github.client.kmm.usecase.SearchRepositoriesUseCase
+import io.github.reactivecircus.cache4k.Cache
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
+import kotlin.time.Duration.Companion.minutes
 
 val networkModule = module {
     single {
@@ -30,17 +33,24 @@ val networkModule = module {
     }
 }
 
-
 val useCaseModule = module {
-   factory { SearchRepositoriesUseCase(get()) }
+    factory { SearchRepositoriesUseCase(get()) }
 }
 
+val cacheModule = module {
+    single {
+        Cache.Builder<String, GitHubAPIResponse>()
+            .expireAfterWrite(10.minutes)
+            .build()
+    }
+}
 val repositoryModule = module {
-    single<GitHubRepository> { GitHubRepositoryImpl(get()) }
+    single<GitHubRepository> { GitHubRepositoryImpl(get(), get()) }
 }
 
 val sharedModule = listOf(
     networkModule,
     useCaseModule,
-    repositoryModule
+    repositoryModule,
+    cacheModule
 )

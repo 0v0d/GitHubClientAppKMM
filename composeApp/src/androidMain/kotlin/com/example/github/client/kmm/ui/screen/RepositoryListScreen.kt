@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -186,12 +187,20 @@ private fun RepositoryItemContent(
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                repository.language?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Utility().getColorForLanguage(it)
-                    )
+                Row {
+                    repository.language?.let {
+                        Icon(
+                            imageVector = Icons.Default.Code,
+                            contentDescription = "Language",
+                            modifier = Modifier.size(16.dp),
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Utility().getColorForLanguage(it)
+                        )
+                    }
                 }
             }
         }

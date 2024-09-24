@@ -11,6 +11,7 @@
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
+		D067350F2CA1872D00DD72E8 /* InputKeyWordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D067350E2CA1872C00DD72E8 /* InputKeyWordViewModel.swift */; };
 		D08DA0552C9F04DF0008AF37 /* RepositoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08DA0542C9F04DC0008AF37 /* RepositoryListViewModel.swift */; };
 		D08DA05A2C9F05840008AF37 /* RepositoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08DA0592C9F05820008AF37 /* RepositoryRowView.swift */; };
 		D0A5FFFB2C9DE73A00FBE24D /* InputKeyWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A5FFFA2C9DE73800FBE24D /* InputKeyWordView.swift */; };
@@ -30,6 +31,7 @@
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		D067350E2CA1872C00DD72E8 /* InputKeyWordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKeyWordViewModel.swift; sourceTree = "<group>"; };
 		D08DA0542C9F04DC0008AF37 /* RepositoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryListViewModel.swift; sourceTree = "<group>"; };
 		D08DA0592C9F05820008AF37 /* RepositoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryRowView.swift; sourceTree = "<group>"; };
 		D0A5FFFA2C9DE73800FBE24D /* InputKeyWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputKeyWordView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 		D08DA0532C9F049C0008AF37 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				D067350E2CA1872C00DD72E8 /* InputKeyWordViewModel.swift */,
 				D08DA0542C9F04DC0008AF37 /* RepositoryListViewModel.swift */,
 			);
 			path = ViewModel;
@@ -274,6 +277,7 @@
 				D0FD01752C9EE81300C24BB2 /* ErrorView.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				D0FD01732C9ED87700C24BB2 /* RepositoryDetailView.swift in Sources */,
+				D067350F2CA1872D00DD72E8 /* InputKeyWordViewModel.swift in Sources */,
 				D0A5FFFF2C9DE77800FBE24D /* RepositoryListView.swift in Sources */,
 				D08DA05A2C9F05840008AF37 /* RepositoryRowView.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
