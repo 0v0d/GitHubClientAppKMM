@@ -53,10 +53,10 @@ fun APIRepositoryItem.toDomainModel() = RepositoryItem(
     htmlUrl = htmlUrl,
     description = description,
     language = language,
-    stargazersCount = stargazersCount.toString(),
-    watchersCount = watchersCount.toString(),
-    forksCount = forksCount.toString(),
-    openIssuesCount = openIssuesCount.toString()
+    stargazersCount = stargazersCount,
+    watchersCount = watchersCount,
+    forksCount = forksCount,
+    openIssuesCount = openIssuesCount
 )
 
 fun APIOwnerItem.toDomainModel() = OwnerItem(

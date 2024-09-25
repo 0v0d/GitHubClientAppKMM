@@ -15,8 +15,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.CallSplit
+import androidx.compose.material.icons.filled.Adjust
 import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
@@ -34,7 +34,8 @@ import coil.compose.AsyncImage
 import com.example.github.client.kmm.mock.RepositoryItemMocks
 import com.example.github.client.kmm.model.OwnerItem
 import com.example.github.client.kmm.model.RepositoryItem
-import com.example.github.client.kmm.util.Utility
+import com.example.github.client.kmm.util.getColorForLanguage
+import com.example.github.client.kmm.util.getFormattedCount
 
 @Composable
 fun DetailScreen(
@@ -66,10 +67,10 @@ fun DetailScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         RepositoryStatistics(
-            stars = repositoryItem.stargazersCount,
-            watchers = repositoryItem.watchersCount,
-            forks = repositoryItem.forksCount,
-            issues = repositoryItem.openIssuesCount
+            stars = getFormattedCount(repositoryItem.stargazersCount),
+            watchers = getFormattedCount(repositoryItem.watchersCount),
+            forks = getFormattedCount(repositoryItem.forksCount),
+            issues = getFormattedCount(repositoryItem.openIssuesCount)
         )
     }
 }
@@ -117,7 +118,7 @@ fun RepositoryLanguage(language: String) {
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = language,
-            color = Utility().getColorForLanguage(language)
+            color = getColorForLanguage(language)
         )
     }
 }
@@ -136,7 +137,7 @@ fun RepositoryStatistics(
         StatisticItem(Icons.Default.Star, stars, "Stars")
         StatisticItem(Icons.Default.RemoveRedEye, watchers, "Watchers")
         StatisticItem(Icons.AutoMirrored.Filled.CallSplit, forks, "Forks")
-        StatisticItem(Icons.Default.ErrorOutline, issues, "Issues")
+        StatisticItem(Icons.Default.Adjust, issues, "Issues")
     }
 }
 

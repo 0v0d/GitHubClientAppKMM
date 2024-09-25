@@ -11,10 +11,10 @@ data class RepositoryItem(
     val htmlUrl: String,
     val description: String?,
     val language: String?,
-    val stargazersCount: String,
-    val watchersCount: String,
-    val forksCount: String,
-    val openIssuesCount: String
+    val stargazersCount: Int,
+    val watchersCount: Int,
+    val forksCount: Int,
+    val openIssuesCount: Int
 )
 
 @Serializable

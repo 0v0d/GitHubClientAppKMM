@@ -13,17 +13,18 @@ struct RepositoryRowView: View {
     let repository: RepositoryItem
     
     var body: some View {
-        HStack(spacing: 8) {
-            OwnerAvatarView(avatarUrl: repository.owner.avatarUrl)
-            VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                OwnerAvatarView(avatarUrl: repository.owner.avatarUrl)
                 RepositoryHeaderView(name: repository.name, ownerLogin: repository.owner.login)
-                
-                if let description = repository.description_ {
-                    DescriptionView(text: description)
-                }
-                
-                RepositoryStatsView(stargazersCount: repository.stargazersCount, language: repository.language)
             }
+            
+            if let description = repository.description_ {
+                DescriptionView(text: description)
+            }
+            
+            RepositoryStatsView(stargazersCount: Int(repository.stargazersCount),
+                                language: repository.language)
         }
         .padding(.vertical, 8)
     }
@@ -74,30 +75,22 @@ private struct DescriptionView: View {
 }
 
 private struct RepositoryStatsView: View {
-    let stargazersCount: String
+    let stargazersCount: Int
     let language: String?
     
     var body: some View {
         HStack(spacing: 16) {
-            StargazersCountView(count: stargazersCount)
+            HStack(spacing: 4) {
+                Image(systemName: "star.fill")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                Text(getFormattedCount(count:stargazersCount))
+                    .font(.caption)
+            }
             
             if let language = language {
                 LanguageView(language: language)
             }
-        }
-    }
-}
-
-private struct StargazersCountView: View {
-    let count: String
-    
-    var body: some View {
-        HStack(spacing: 4) {
-            Image(systemName: "star.fill")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-            Text(count)
-                .font(.caption)
         }
     }
 }
@@ -112,7 +105,7 @@ private struct LanguageView: View {
                 .foregroundColor(.secondary)
             Text(language)
                 .font(.caption)
-                .foregroundColor(Utility().getLanguageColor(for: language))
+                .foregroundColor(getLanguageColor(for: language))
         }
     }
 }

@@ -42,7 +42,8 @@ import com.example.github.client.kmm.R
 import com.example.github.client.kmm.mock.RepositoryItemMocks.mockRepoList
 import com.example.github.client.kmm.model.RepositoryItem
 import com.example.github.client.kmm.ui.theme.AppTheme
-import com.example.github.client.kmm.util.Utility
+import com.example.github.client.kmm.util.getColorForLanguage
+import com.example.github.client.kmm.util.getFormattedCount
 import com.example.github.client.kmm.viewmodel.RepositoryListViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -139,71 +140,30 @@ private fun RepositoryItemContent(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(repository.owner.avatarUrl)
-                .crossfade(true)
-                .build(),
-            contentDescription = null,
-            modifier = Modifier
-                .size(60.dp)
-                .clip(CircleShape)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = repository.name,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = repository.owner.login,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            repository.description?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodySmall,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+            Row {
+                OwnerAvatarContent(repository.owner.avatarUrl)
+                Spacer(modifier = Modifier.width(8.dp))
+                RepositoryHeaderContent(
+                    repository.name,
+                    repository.owner.login
                 )
+            }
+            repository.description?.let {
+                DescriptionContent(it)
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                    tint = MaterialTheme.colorScheme.secondary
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = repository.stargazersCount,
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Row {
-                    repository.language?.let {
-                        Icon(
-                            imageVector = Icons.Default.Code,
-                            contentDescription = "Language",
-                            modifier = Modifier.size(16.dp),
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = it,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Utility().getColorForLanguage(it)
-                        )
-                    }
-                }
-            }
+            RepositoryStatsContent(
+                repository.language,
+                repository.stargazersCount
+            )
         }
+
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = "View Details",
@@ -212,6 +172,85 @@ private fun RepositoryItemContent(
     }
 }
 
+@Composable
+private fun OwnerAvatarContent(avatarUrl: String) {
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(avatarUrl)
+            .crossfade(true)
+            .build(),
+        contentDescription = null,
+        modifier = Modifier
+            .size(60.dp)
+            .clip(CircleShape)
+    )
+}
+
+@Composable
+private fun RepositoryHeaderContent(name: String, ownerLogin: String) {
+    Column {
+        Text(
+            text = name,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = ownerLogin,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+
+@Composable
+private fun DescriptionContent(description: String) {
+    Spacer(modifier = Modifier.height(4.dp)) // 説明の前に少しスペース
+    Text(
+        text = description,
+        style = MaterialTheme.typography.bodySmall,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis
+    )
+}
+
+@Composable
+private fun RepositoryStatsContent(language: String?, stars: Int) {
+// スターとプログラミング言語の表示
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            imageVector = Icons.Default.Star,
+            contentDescription = null,
+            modifier = Modifier.size(16.dp),
+            tint = MaterialTheme.colorScheme.secondary
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = getFormattedCount(stars),
+            style = MaterialTheme.typography.bodySmall
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        // プログラミング言語の表示
+        language?.let {
+            LanguageContent(it)
+        }
+    }
+}
+
+@Composable
+private fun LanguageContent(language: String) {
+    Icon(
+        imageVector = Icons.Default.Code,
+        contentDescription = "Language",
+        modifier = Modifier.size(16.dp)
+    )
+    Spacer(modifier = Modifier.width(4.dp))
+    Text(
+        text = language,
+        style = MaterialTheme.typography.bodySmall,
+        color = getColorForLanguage(language)
+    )
+}
 
 @Suppress("UnusedPrivateMember")
 @Preview(showBackground = true)

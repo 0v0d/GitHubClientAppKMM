@@ -21,7 +21,7 @@ struct InputKeyWordView: View {
                 
                 Spacer()
             }
-            .navigationTitle("検索")
+            .navigationTitle("Search")
             .navigationDestination(isPresented: $viewModel.shouldNavigate) {
                 RepositoryListView(inputText: viewModel.text, searchHelper: SearchRepositoriesUseCaseHelper())
             }
@@ -42,7 +42,7 @@ struct InputKeyWordView_MockPreview: View {
                 
                 Spacer()
             }
-            .navigationTitle("検索")
+            .navigationTitle("Search")
             .navigationDestination(isPresented: $viewModel.shouldNavigate) {
                 RepositoryListView(inputText: "Mock", searchHelper: MockSearchRepositoriesUseCaseHelper())
             }

@@ -95,7 +95,7 @@ private struct LanguageView: View {
                     Image(systemName: "chevron.left.chevron.right")
                     Text(language)
                         .font(.subheadline)
-                        .foregroundColor(Utility().getLanguageColor(for: language))
+                        .foregroundColor(getLanguageColor(for: language))
                 }
             }
         }
@@ -108,17 +108,17 @@ private struct StatisticsView: View {
     
     var body: some View {
         HStack {
-            StatisticItem(icon: "star.fill", count: repository.stargazersCount, label: "Stars")
-            StatisticItem(icon: "eye.fill", count: repository.watchersCount, label: "Watchers")
-            StatisticItem(icon: "tuningfork", count: repository.forksCount, label: "Forks")
-            StatisticItem(icon: "exclamationmark.triangle.fill", count: repository.openIssuesCount, label: "Issues")
+            StatisticItem(icon: "star.fill", count: Int(repository.stargazersCount), label: "Stars")
+            StatisticItem(icon: "eye.fill", count: Int(repository.watchersCount), label: "Watchers")
+            StatisticItem(icon: "arrow.triangle.branch", count: Int(repository.forksCount), label: "Forks")
+            StatisticItem(icon: "record.circle", count: Int(repository.openIssuesCount), label: "Issues")
         }
     }
 }
 
 struct StatisticItem: View {
     let icon: String
-    let count: String
+    let count: Int
     let label: String
     
     var body: some View {
@@ -127,7 +127,7 @@ struct StatisticItem: View {
                 .font(.title3)
                 .foregroundColor(.secondary)
             
-            Text(count)
+            Text(getFormattedCount(count: count))
                 .font(.subheadline)
                 .foregroundColor(.primary)
             
