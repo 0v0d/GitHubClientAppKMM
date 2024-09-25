@@ -2,10 +2,9 @@
 
 Kotlin Multiplatformを使用した、GitHubリポジトリ検索アプリです。</br>
 AndroidアプリはJetpack Compose、iOSアプリはSwiftUIを使用しており、共通のビジネスロジックはKotlinで共有しています。
-
-<img src="app_android.mp4" width="314" alt="Androidアプリのデモ動画">
-
-<img src="app_ios.mp4" width="314" alt="iOSアプリのデモ動画">
+|           Android         |           iOS           |
+|:--------------------------:|:--------------------------:|
+| <img src="app_android.gif" width="314" alt="アプリのデモ動画"> | <img src="app_ios.gif" width="314" alt="アプリのデモ動画">|
 
 ## 開発環境
 
