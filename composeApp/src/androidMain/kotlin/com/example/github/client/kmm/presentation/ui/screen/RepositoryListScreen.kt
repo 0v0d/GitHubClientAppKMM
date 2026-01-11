@@ -1,4 +1,4 @@
-package com.example.github.client.kmm.ui.screen
+package com.example.github.client.kmm.presentation.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -41,7 +41,7 @@ import coil.request.ImageRequest
 import com.example.github.client.kmm.R
 import com.example.github.client.kmm.mock.RepositoryItemMocks.mockRepoList
 import com.example.github.client.kmm.model.RepositoryItem
-import com.example.github.client.kmm.ui.theme.AppTheme
+import com.example.github.client.kmm.presentation.ui.theme.AppTheme
 import com.example.github.client.kmm.util.getColorForLanguage
 import com.example.github.client.kmm.util.getFormattedCount
 import com.example.github.client.kmm.viewmodel.RepositoryListViewModel

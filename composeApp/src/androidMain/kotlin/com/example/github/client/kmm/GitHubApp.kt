@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.github.client.kmm.navigation.NavigationGraph
+import com.example.github.client.kmm.presentation.navigation.NavigationGraph
 
 @Composable
 fun GitHubApp(

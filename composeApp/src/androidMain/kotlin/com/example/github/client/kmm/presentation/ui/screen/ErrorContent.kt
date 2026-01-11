@@ -1,4 +1,4 @@
-package com.example.github.client.kmm.ui.screen
+package com.example.github.client.kmm.presentation.ui.screen
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.github.client.kmm.R
-import com.example.github.client.kmm.ui.theme.AppTheme
+import com.example.github.client.kmm.presentation.ui.theme.AppTheme
 
 @Composable
 fun ErrorContent(

@@ -1,4 +1,4 @@
-package com.example.github.client.kmm.ui.screen
+package com.example.github.client.kmm.presentation.ui.screen
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.github.client.kmm.R
 
-import com.example.github.client.kmm.ui.theme.AppTheme
+import com.example.github.client.kmm.presentation.ui.theme.AppTheme
 
 @Composable
 fun SearchTextField(

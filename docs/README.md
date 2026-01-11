@@ -1,4 +1,4 @@
-## アプリ仕様
+2## アプリ仕様
 
 Kotlin Multiplatformを使用した、GitHubリポジトリ検索アプリです。</br>
 AndroidアプリはJetpack Compose、iOSアプリはSwiftUIを使用しており、共通のビジネスロジックはKotlinで共有しています。

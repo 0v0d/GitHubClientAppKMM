@@ -1,4 +1,4 @@
-package com.example.github.client.kmm.ui.theme
+package com.example.github.client.kmm.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

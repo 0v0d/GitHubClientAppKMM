@@ -1,4 +1,4 @@
-package com.example.github.client.kmm.ui.screen
+package com.example.github.client.kmm.presentation.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

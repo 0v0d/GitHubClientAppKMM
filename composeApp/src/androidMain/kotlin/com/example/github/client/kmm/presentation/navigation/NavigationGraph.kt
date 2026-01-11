@@ -1,4 +1,4 @@
-package com.example.github.client.kmm.navigation
+package com.example.github.client.kmm.presentation.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
@@ -10,9 +10,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.github.client.kmm.GitHubAppScreens
 import com.example.github.client.kmm.model.RepositoryItem
-import com.example.github.client.kmm.ui.screen.DetailScreen
-import com.example.github.client.kmm.ui.screen.InputScreen
-import com.example.github.client.kmm.ui.screen.RepositoryListScreen
+import com.example.github.client.kmm.presentation.ui.screen.DetailScreen
+import com.example.github.client.kmm.presentation.ui.screen.InputScreen
+import com.example.github.client.kmm.presentation.ui.screen.RepositoryListScreen
 import com.google.gson.Gson
 
 @Composable
