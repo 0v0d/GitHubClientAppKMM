@@ -61,3 +61,7 @@ AndroidアプリはJetpack Compose、iOSアプリはSwiftUIを使用しており
 - **shared**: 共通のビジネスロジック (Kotlinで実装)
 - **ComposeApp**: Android UI (Jetpack Composeで実装)
 - **iOSApp**: iOS UI (SwiftUIで実装)
+
+## ライセンス
+このプロジェクトはサードパーティのオープンソースライブラリを使用しています。 
+各ライブラリは独自のライセンスに基づいて配布されます。
