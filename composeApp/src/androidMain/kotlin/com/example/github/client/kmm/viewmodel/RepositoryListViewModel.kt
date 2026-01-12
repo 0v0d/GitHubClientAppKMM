@@ -2,7 +2,7 @@ package com.example.github.client.kmm.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.github.client.kmm.model.RepositoryItem
+import com.example.github.client.kmm.data.model.RepositoryItem
 import com.example.github.client.kmm.usecase.SearchRepositoriesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +27,7 @@ class RepositoryListViewModel(
                 searchRepositoriesUseCase(inputText).collect { response ->
                     _repositories.value = response
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 _repositories.value = emptyList()
             } finally {
                 _loadingState.value = false

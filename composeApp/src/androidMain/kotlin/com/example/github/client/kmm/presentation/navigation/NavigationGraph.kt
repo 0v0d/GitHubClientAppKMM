@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.github.client.kmm.GitHubAppScreens
-import com.example.github.client.kmm.model.RepositoryItem
+import com.example.github.client.kmm.data.model.RepositoryItem
 import com.example.github.client.kmm.presentation.ui.screen.DetailScreen
 import com.example.github.client.kmm.presentation.ui.screen.InputScreen
 import com.example.github.client.kmm.presentation.ui.screen.RepositoryListScreen

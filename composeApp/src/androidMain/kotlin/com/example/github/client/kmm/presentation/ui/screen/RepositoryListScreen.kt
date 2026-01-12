@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.github.client.kmm.R
-import com.example.github.client.kmm.mock.RepositoryItemMocks.mockRepoList
-import com.example.github.client.kmm.model.RepositoryItem
+import com.example.github.client.kmm.data.mock.RepositoryItemMocks.mockRepoList
+import com.example.github.client.kmm.data.model.RepositoryItem
 import com.example.github.client.kmm.presentation.ui.theme.AppTheme
 import com.example.github.client.kmm.util.getColorForLanguage
 import com.example.github.client.kmm.util.getFormattedCount

@@ -1,7 +1,7 @@
 package com.example.github.client.kmm.module
 
-import com.example.github.client.kmm.model.GitHubAPIResponse
-import com.example.github.client.kmm.remote.GitHubAPI
+import com.example.github.client.kmm.data.model.GitHubAPIResponse
+import com.example.github.client.kmm.remote.GitHubDataSource
 import com.example.github.client.kmm.repository.GitHubRepository
 import com.example.github.client.kmm.repository.GitHubRepositoryImpl
 import com.example.github.client.kmm.usecase.SearchRepositoriesUseCase
@@ -26,7 +26,7 @@ val networkModule = module {
         }
     }
     single {
-        GitHubAPI(
+        GitHubDataSource(
             baseUrl = "https://api.github.com/search/repositories",
             httpClient = get()
         )

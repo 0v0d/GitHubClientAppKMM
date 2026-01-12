@@ -1,6 +1,6 @@
-package com.example.github.client.kmm.mock
+package com.example.github.client.kmm.data.mock
 
-import com.example.github.client.kmm.model.RepositoryItem
+import com.example.github.client.kmm.data.model.RepositoryItem
 
 object RepositoryItemMocks {
 

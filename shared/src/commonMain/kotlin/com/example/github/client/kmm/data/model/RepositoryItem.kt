@@ -1,4 +1,4 @@
-package com.example.github.client.kmm.model
+package com.example.github.client.kmm.data.model
 
 import kotlinx.serialization.Serializable
 

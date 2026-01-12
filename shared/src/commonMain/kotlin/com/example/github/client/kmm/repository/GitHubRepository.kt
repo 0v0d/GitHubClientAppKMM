@@ -1,7 +1,7 @@
 package com.example.github.client.kmm.repository
 
-import com.example.github.client.kmm.model.GitHubAPIResponse
-import com.example.github.client.kmm.remote.GitHubAPI
+import com.example.github.client.kmm.data.model.GitHubAPIResponse
+import com.example.github.client.kmm.remote.GitHubDataSource
 import io.github.reactivecircus.cache4k.Cache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -12,7 +12,7 @@ interface GitHubRepository {
 }
 
 class GitHubRepositoryImpl(
-    private val service: GitHubAPI,
+    private val service: GitHubDataSource,
     private val cache: Cache<String, GitHubAPIResponse>
 ) : GitHubRepository {
     override suspend fun getRepositories(query: String) = searchRepositories(query)
@@ -24,7 +24,7 @@ class GitHubRepositoryImpl(
                 val response = service.searchRepositories(query)
                 cache.put(query, response)
                 response
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 null
             }
         }

@@ -31,9 +31,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.github.client.kmm.mock.RepositoryItemMocks
-import com.example.github.client.kmm.model.OwnerItem
-import com.example.github.client.kmm.model.RepositoryItem
+import com.example.github.client.kmm.data.mock.RepositoryItemMocks
+import com.example.github.client.kmm.data.model.OwnerItem
+import com.example.github.client.kmm.data.model.RepositoryItem
 import com.example.github.client.kmm.util.getColorForLanguage
 import com.example.github.client.kmm.util.getFormattedCount
 
