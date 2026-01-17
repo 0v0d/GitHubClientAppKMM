@@ -3,12 +3,13 @@ package com.example.github.client.kmm.data.mock
 import com.example.github.client.kmm.data.model.RepositoryItem
 
 object RepositoryItemMocks {
-
     val mockRepo1 = RepositoryItem(
         id = 123456789,
         name = "Spaceship-Project",
         fullName = "starbuilder/Spaceship-Project",
-        owner = OwnerItemMocks.mockOwner1,
+        ownerLogin = "starbuilder",
+        ownerAvatarUrl = "https://avatars.githubusercontent.com/u/583231?v=4",
+        ownerHtmlUrl = "https://github.com/starbuilder",
         htmlUrl = "https://github.com/starbuilder/Spaceship-Project",
         description = "A project to build a spaceship simulator",
         language = "Kotlin",
@@ -22,7 +23,9 @@ object RepositoryItemMocks {
         id = 987654321,
         name = "Magic-Potion",
         fullName = "wizarddev/Magic-Potion",
-        owner = OwnerItemMocks.mockOwner2,
+        ownerLogin = "wizarddev",
+        ownerAvatarUrl  = "https://avatars.githubusercontent.com/u/583231?v=4",
+        ownerHtmlUrl = "https://github.com/wizarddev",
         htmlUrl = "https://github.com/wizarddev/Magic-Potion",
         description = "A repository of magic potion formulas",
         language = "Python",
@@ -36,7 +39,9 @@ object RepositoryItemMocks {
         id = 135792468,
         name = "Dream-Visualizer",
         fullName = "imagination/Dream-Visualizer",
-        owner = OwnerItemMocks.mockOwner2,
+        ownerLogin = "wizarddev",
+        ownerAvatarUrl  = "https://avatars.githubusercontent.com/u/583231?v=4",
+        ownerHtmlUrl = "https://github.com/wizarddev",
         htmlUrl = "https://github.com/imagination/Dream-Visualizer",
         description = "A tool to visualize dreams using neural networks",
         language = "Swift",
@@ -50,7 +55,9 @@ object RepositoryItemMocks {
         id = 246813579,
         name = "SuperBlogEngine",
         fullName = "techwriter/SuperBlogEngine",
-        owner = OwnerItemMocks.mockOwner3,
+        ownerLogin = "techwriter",
+        ownerAvatarUrl = "https://avatars.githubusercontent.com/u/583231?v=4",
+        ownerHtmlUrl = "https://github.com/techwriter",
         htmlUrl = "https://github.com/techwriter/SuperBlogEngine",
         description = "A powerful blog engine for creative writers",
         language = "Ruby",
@@ -64,7 +71,9 @@ object RepositoryItemMocks {
         id = 975318642,
         name = "DevTools-Suite",
         fullName = "devmaster/DevTools-Suite",
-        owner = OwnerItemMocks.mockOwner4,
+        ownerLogin = "devmaster",
+        ownerAvatarUrl = "https://avatars.githubusercontent.com/u/583231?v=4",
+        ownerHtmlUrl = "https://github.com/devmaster",
         htmlUrl = "https://github.com/devmaster/DevTools-Suite",
         description = "A comprehensive suite of DevOps tools",
         language = "Go",
@@ -78,7 +87,9 @@ object RepositoryItemMocks {
         id = 468135792,
         name = "AI-Research-Lab",
         fullName = "aiguru/AI-Research-Lab",
-        owner = OwnerItemMocks.mockOwner3,
+        ownerLogin = "techwriter",
+        ownerAvatarUrl = "https://avatars.githubusercontent.com/u/583231?v=4",
+        ownerHtmlUrl = "https://github.com/techwriter",
         htmlUrl = "https://github.com/aiguru/AI-Research-Lab",
         description = "A repository for AI research papers and projects",
         language = "Python",
@@ -92,7 +103,9 @@ object RepositoryItemMocks {
         id = 753951852,
         name = "Web-Builder",
         fullName = "webmaster/Web-Builder",
-        owner = OwnerItemMocks.mockOwner2,
+        ownerLogin = "wizarddev",
+        ownerAvatarUrl  = "https://avatars.githubusercontent.com/u/583231?v=4",
+        ownerHtmlUrl = "https://github.com/wizarddev",
         htmlUrl = "https://github.com/webmaster/Web-Builder",
         description = "A lightweight web development framework",
         language = "JavaScript",
@@ -112,5 +125,3 @@ object RepositoryItemMocks {
         mockRepo7,
     )
 }
-
-

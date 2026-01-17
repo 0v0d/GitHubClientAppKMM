@@ -49,7 +49,9 @@ fun APIRepositoryItem.toDomainModel() = RepositoryItem(
     id = id,
     name = name,
     fullName = fullName,
-    owner = owner.toDomainModel(),
+    ownerLogin = owner.login,
+    ownerAvatarUrl = owner.avatarUrl,
+    ownerHtmlUrl = owner.htmlUrl,
     htmlUrl = htmlUrl,
     description = description,
     language = language,
@@ -57,10 +59,4 @@ fun APIRepositoryItem.toDomainModel() = RepositoryItem(
     watchersCount = watchersCount,
     forksCount = forksCount,
     openIssuesCount = openIssuesCount
-)
-
-fun APIOwnerItem.toDomainModel() = OwnerItem(
-    login = login,
-    avatarUrl = avatarUrl,
-    htmlUrl = htmlUrl
 )

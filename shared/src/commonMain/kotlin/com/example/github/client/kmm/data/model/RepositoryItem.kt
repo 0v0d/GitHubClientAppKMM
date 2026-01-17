@@ -7,7 +7,9 @@ data class RepositoryItem(
     val id: Long,
     val name: String,
     val fullName: String,
-    val owner: OwnerItem,
+    val ownerLogin: String,
+    val ownerAvatarUrl: String,
+    val ownerHtmlUrl: String,
     val htmlUrl: String,
     val description: String?,
     val language: String?,
@@ -15,11 +17,4 @@ data class RepositoryItem(
     val watchersCount: Int,
     val forksCount: Int,
     val openIssuesCount: Int
-)
-
-@Serializable
-data class OwnerItem(
-    val login: String,
-    val avatarUrl: String,
-    val htmlUrl: String
 )

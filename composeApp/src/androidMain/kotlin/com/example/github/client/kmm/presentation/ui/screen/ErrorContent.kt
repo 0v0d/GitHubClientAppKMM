@@ -59,7 +59,7 @@ fun ErrorContent(
 private fun ErrorContentPreview() {
     AppTheme {
         ErrorContent(
-            errorMessage = R.string.error_message,
+            errorMessage = R.string.error_message_not_found_repository,
             onRetry = {}
         )
     }

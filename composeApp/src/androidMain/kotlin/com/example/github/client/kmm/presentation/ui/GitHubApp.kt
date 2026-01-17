@@ -1,4 +1,4 @@
-package com.example.github.client.kmm
+package com.example.github.client.kmm.presentation.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,27 +21,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.github.client.kmm.presentation.navigation.NavigationGraph
+import com.example.github.client.kmm.presentation.navigation.getScreenTitleResID
 
 @Composable
 fun GitHubApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = backStackEntry?.destination?.route ?: GitHubAppScreens.InputScreen.name
-
-    val currentScreen = when {
-        currentRoute.startsWith(GitHubAppScreens.InputScreen.name) -> GitHubAppScreens.InputScreen
-        currentRoute.startsWith(GitHubAppScreens.RepositoryListScreen.name) -> GitHubAppScreens.RepositoryListScreen
-        currentRoute.startsWith(GitHubAppScreens.DetailScreen.name) -> GitHubAppScreens.DetailScreen
-        else -> GitHubAppScreens.InputScreen
-    }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreenTitleId = navBackStackEntry.getScreenTitleResID()
 
     Scaffold(
         modifier = modifier,
         topBar = {
             GitHubAppBar(
-                currentScreen = currentScreen,
+                currentScreenTitleId = currentScreenTitleId,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() }
             )
@@ -58,14 +52,14 @@ fun GitHubApp(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GitHubAppBar(
-    currentScreen: GitHubAppScreens,
+private fun GitHubAppBar(
+    @StringRes currentScreenTitleId: Int,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text(stringResource(currentScreen.title)) },
+        title = { Text(stringResource(currentScreenTitleId)) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -81,10 +75,4 @@ fun GitHubAppBar(
             }
         }
     )
-}
-
-enum class GitHubAppScreens(@StringRes val title: Int) {
-    InputScreen(R.string.input_screen_title),
-    RepositoryListScreen(R.string.list_screen_title),
-    DetailScreen(R.string.detail_screen_title),
 }

@@ -10,6 +10,7 @@ import SwiftUI
 import Shared
 import Foundation
 
+//TODO: ViewModelにちゃんとする
 extension RepositoryListView {
     @MainActor
     final class ViewModel: ObservableObject {
@@ -17,7 +18,9 @@ extension RepositoryListView {
             case onAppear
             case onRetry
         }
-        
+
+        //TODO: Observationに変更
+        //https://qiita.com/lovee/items/4909d0166bba973b3bc0
         @Published private(set) var state: SearchState<[RepositoryItem]> = .loading
         
         private let searchHelper: SearchRepositoriesUseCaseHelper

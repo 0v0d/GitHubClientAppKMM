@@ -7,14 +7,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class SearchRepositoriesUseCase(private val repository: GitHubRepository) {
-    operator fun invoke(query: String): Flow<List<RepositoryItem>> = flow {
+    suspend operator fun invoke(query: String): List<RepositoryItem>{
         try {
             val response = repository.getRepositories(query)
-            if (response != null) {
-                emit(response.items.map { it.toDomainModel() })
-            }
+            return response?.items?.map { it.toDomainModel() } ?: emptyList()
         } catch (_: Exception) {
-            emit(emptyList())
+           return emptyList()
         }
     }
 }

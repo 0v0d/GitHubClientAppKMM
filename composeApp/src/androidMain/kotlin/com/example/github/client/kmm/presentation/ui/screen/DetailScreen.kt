@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.github.client.kmm.data.mock.RepositoryItemMocks
-import com.example.github.client.kmm.data.model.OwnerItem
 import com.example.github.client.kmm.data.model.RepositoryItem
 import com.example.github.client.kmm.util.getColorForLanguage
 import com.example.github.client.kmm.util.getFormattedCount
@@ -52,7 +51,10 @@ fun DetailScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        RepositoryOwnerInfo(repositoryItem.owner)
+        RepositoryOwnerInfo(
+            ownerLogin = repositoryItem.ownerLogin,
+            ownerAvatarUrl = repositoryItem.ownerAvatarUrl
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -85,17 +87,20 @@ fun RepositoryTitle(name: String) {
 }
 
 @Composable
-fun RepositoryOwnerInfo(owner: OwnerItem) {
+fun RepositoryOwnerInfo(
+    ownerLogin: String,
+    ownerAvatarUrl: String
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         AsyncImage(
-            model = owner.avatarUrl,
+            model = ownerAvatarUrl,
             contentDescription = "Owner Avatar",
             modifier = Modifier
                 .size(60.dp)
                 .clip(CircleShape)
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Text(text = owner.login)
+        Text(text = ownerLogin)
     }
 }
 

@@ -26,7 +26,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,14 +35,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.github.client.kmm.R
 import com.example.github.client.kmm.data.mock.RepositoryItemMocks.mockRepoList
 import com.example.github.client.kmm.data.model.RepositoryItem
 import com.example.github.client.kmm.presentation.ui.theme.AppTheme
 import com.example.github.client.kmm.util.getColorForLanguage
 import com.example.github.client.kmm.util.getFormattedCount
+import com.example.github.client.kmm.viewmodel.RepositoryListUIState
 import com.example.github.client.kmm.viewmodel.RepositoryListViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -56,47 +56,39 @@ fun RepositoryListScreen(
     modifier: Modifier = Modifier,
     viewModel: RepositoryListViewModel = koinViewModel()
 ) {
-    val repositories by viewModel.repositories.collectAsState()
-    val loadingState by viewModel.loadingState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(inputText) {
         viewModel.searchRepositories(inputText)
     }
 
-    RepositoryListContent(
-        repositories = repositories.toImmutableList(),
-        isLoading = loadingState,
-        onItemClick = onItemClick,
-        onRetry = { viewModel.searchRepositories(inputText) },
-        modifier = modifier
-    )
-}
-
-@Composable
-fun RepositoryListContent(
-    repositories: ImmutableList<RepositoryItem>,
-    isLoading: Boolean,
-    onItemClick: (RepositoryItem) -> Unit,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier
-) {
     Box(
         modifier = modifier.fillMaxSize()
     ) {
-        when {
-            isLoading -> CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
+        when (val state = uiState) {
+            is RepositoryListUIState.Loading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
 
-            repositories.isEmpty() -> ErrorContent(
-                errorMessage = R.string.error_message,
-                onRetry = onRetry
-            )
+            is RepositoryListUIState.Success -> {
+                RepositoryList(
+                    repositories = state.repositories,
+                    onItemClick = onItemClick,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
 
-            else -> RepositoryList(
-                repositories = repositories,
-                onItemClick = onItemClick
-            )
+            is RepositoryListUIState.Error -> {
+                ErrorContent(
+                    errorMessage = state.messageID,
+                    onRetry = {
+                        viewModel.searchRepositories(inputText)
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 }
@@ -147,11 +139,11 @@ private fun RepositoryItemContent(
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Row {
-                OwnerAvatarContent(repository.owner.avatarUrl)
+                OwnerAvatarContent(repository.ownerAvatarUrl)
                 Spacer(modifier = Modifier.width(8.dp))
                 RepositoryHeaderContent(
                     repository.name,
-                    repository.owner.login
+                    repository.ownerLogin
                 )
             }
             repository.description?.let {
@@ -202,10 +194,10 @@ private fun RepositoryHeaderContent(name: String, ownerLogin: String) {
     }
 }
 
-
 @Composable
 private fun DescriptionContent(description: String) {
-    Spacer(modifier = Modifier.height(4.dp)) // 説明の前に少しスペース
+    // 説明の前に少しスペース
+    Spacer(modifier = Modifier.height(4.dp))
     Text(
         text = description,
         style = MaterialTheme.typography.bodySmall,
@@ -257,11 +249,9 @@ private fun LanguageContent(language: String) {
 @Composable
 private fun RepositoryListPreview() {
     AppTheme {
-        RepositoryListContent(
+        RepositoryList(
             repositories = mockRepoList.toImmutableList(),
             onItemClick = {},
-            isLoading = false,
-            onRetry = {}
         )
     }
 }

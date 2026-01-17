@@ -1,19 +1,18 @@
 package com.example.github.client.kmm.presentation.navigation
 
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.example.github.client.kmm.GitHubAppScreens
+import androidx.navigation.toRoute
 import com.example.github.client.kmm.data.model.RepositoryItem
+import com.example.github.client.kmm.presentation.navigation.GithubRepoDestination.GithubRepoDetailScreen
+import com.example.github.client.kmm.presentation.navigation.GithubRepoDestination.GithubRepoInputScreen
+import com.example.github.client.kmm.presentation.navigation.GithubRepoDestination.GithubRepoListScreen
 import com.example.github.client.kmm.presentation.ui.screen.DetailScreen
 import com.example.github.client.kmm.presentation.ui.screen.InputScreen
 import com.example.github.client.kmm.presentation.ui.screen.RepositoryListScreen
-import com.google.gson.Gson
 
 @Composable
 fun NavigationGraph(
@@ -22,45 +21,62 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = GitHubAppScreens.InputScreen.name,
+        startDestination = GithubRepoInputScreen,
         modifier = modifier
     ) {
-        composable(route = GitHubAppScreens.InputScreen.name) {
+        composable<GithubRepoInputScreen> {
             InputScreen(
                 onSearch = { keyWord ->
-                    val safeName = Uri.encode(keyWord)
                     navController.navigateSingleTopTo(
-                        "${GitHubAppScreens.RepositoryListScreen.name}/$safeName"
+                        GithubRepoListScreen(keyWord)
                     )
                 }
             )
         }
-        composable(
-            route = "${GitHubAppScreens.RepositoryListScreen.name}/{keyWord}",
-            arguments = listOf(navArgument("keyWord") { type = NavType.StringType })
-        ) { backStackEntry ->
+        composable<GithubRepoListScreen> { backStackEntry ->
+            val args = backStackEntry.toRoute<GithubRepoListScreen>()
             RepositoryListScreen(
-                inputText = backStackEntry.arguments?.getString("keyWord") ?: "",
-                onItemClick = { repositoryItem ->
-                    val repositoryJson = Uri.encode(Gson().toJson(repositoryItem))
-                    navController.navigateSingleTopTo("${GitHubAppScreens.DetailScreen.name}/$repositoryJson")
-                }
+                inputText = args.query,
+                onItemClick = { repositoryData ->
+                    navController.navigateSingleTopTo(
+                        GithubRepoDetailScreen(
+                            id = repositoryData.id,
+                            name = repositoryData.name,
+                            fullName = repositoryData.fullName,
+                            ownerLogin = repositoryData.ownerLogin,
+                            ownerAvatarUrl = repositoryData.ownerAvatarUrl,
+                            ownerHtmlUrl = repositoryData.ownerHtmlUrl,
+                            htmlUrl = repositoryData.htmlUrl,
+                            description = repositoryData.description,
+                            language = repositoryData.language,
+                            stargazersCount = repositoryData.stargazersCount,
+                            watchersCount = repositoryData.watchersCount,
+                            forksCount = repositoryData.forksCount,
+                            openIssuesCount = repositoryData.openIssuesCount
+                        )
+                    )
+                },
             )
         }
-        composable(
-            route = "${GitHubAppScreens.DetailScreen.name}/{repositoryJson}",
-            arguments = listOf(navArgument("repositoryJson") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val repositoryJson = backStackEntry.arguments?.getString("repositoryJson")
-            val repositoryItem = Gson().fromJson(repositoryJson, RepositoryItem::class.java)
-
-            DetailScreen(repositoryItem = repositoryItem)
+        composable<GithubRepoDetailScreen> { backStackEntry ->
+            val args = backStackEntry.toRoute<GithubRepoDetailScreen>()
+            DetailScreen(
+                repositoryItem = RepositoryItem(
+                    id = args.id,
+                    name = args.name,
+                    fullName = args.fullName,
+                    ownerLogin = args.ownerLogin,
+                    ownerAvatarUrl = args.ownerAvatarUrl,
+                    ownerHtmlUrl = args.ownerHtmlUrl,
+                    htmlUrl = args.htmlUrl,
+                    description = args.description,
+                    language = args.language,
+                    stargazersCount = args.stargazersCount,
+                    watchersCount = args.watchersCount,
+                    forksCount = args.forksCount,
+                    openIssuesCount = args.openIssuesCount
+                )
+            )
         }
     }
 }
-
-private fun NavHostController.navigateSingleTopTo(route: String) =
-    this.navigate(route) {
-        launchSingleTop = true
-        restoreState = true
-    }
