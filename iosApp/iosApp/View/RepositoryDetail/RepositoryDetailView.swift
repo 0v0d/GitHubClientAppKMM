@@ -15,7 +15,7 @@ struct RepositoryDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 RepositoryTitleView(name: repository.name)
-                OwnerView(owner: repository.owner)
+                OwnerView(avatarUrl: repository.ownerAvatarUrl, login: repository.ownerLogin)
                 DescriptionView(description: repository.description_)
                 LanguageView(language: repository.language)
                 StatisticsView(repository: repository)
@@ -40,12 +40,13 @@ private struct RepositoryTitleView: View {
 }
 
 private struct OwnerView: View {
-    let owner: OwnerItem
-    
+    let avatarUrl: String
+    let login: String
+
     var body: some View {
         HStack(spacing: 8) {
-            AvatarImageView(url: owner.avatarUrl)
-            Text(owner.login)
+            AvatarImageView(url: avatarUrl)
+            Text(login)
                 .font(.headline)
                 .foregroundColor(.primary)
         }

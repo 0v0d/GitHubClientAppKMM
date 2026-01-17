@@ -8,7 +8,7 @@ import org.koin.core.context.startKoin
 
 open class SearchRepositoriesUseCaseHelper : KoinComponent {
     private val searchRepositoriesUseCase: SearchRepositoriesUseCase by inject()
-    open fun searchRepositories(query: String) = searchRepositoriesUseCase(query)
+    open suspend fun searchRepositories(query: String) = searchRepositoriesUseCase(query)
 }
 
 @Suppress("UnusedPrivateMember")

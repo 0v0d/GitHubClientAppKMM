@@ -15,8 +15,8 @@ struct RepositoryRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
-                OwnerAvatarView(avatarUrl: repository.owner.avatarUrl)
-                RepositoryHeaderView(name: repository.name, ownerLogin: repository.owner.login)
+                OwnerAvatarView(avatarUrl: repository.ownerAvatarUrl)
+                RepositoryHeaderView(name: repository.name, ownerLogin: repository.ownerLogin)
             }
             
             if let description = repository.description_ {
@@ -111,8 +111,5 @@ private struct LanguageView: View {
 }
 
 #Preview {
-    RepositoryListView(
-        inputText: "test",
-        searchHelper: MockSearchRepositoriesUseCaseHelper()
-    )
+    RepositoryRowView(repository: RepositoryItemMocks().mockRepo1)
 }

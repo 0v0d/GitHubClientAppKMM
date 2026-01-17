@@ -41,12 +41,11 @@ extension RepositoryListView {
         @MainActor
         private func searchRepositories() async {
             state = .loading
-            for await repos in searchHelper.searchRepositories(query: inputText) {
-                if repos.isEmpty {
-                    state = .failed(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No repositories found"]))
-                } else {
-                    state = .success(repos)
-                }
+            let repos = try? await searchHelper.searchRepositories(query: inputText)
+            if let repos = repos, !repos.isEmpty {
+                state = .success(repos)
+            } else {
+                state = .failed(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No repositories found"]))
             }
         }
     }
